@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>STM32 HAL / LL · 常用函数速查</title>
-<meta name="description" content="STM32 HAL 与 LL 库常用函数速查表：GPIO、RCC、UART、I2C、SPI、TIM、ADC、DMA、NVIC、RTC/IWDG/FLASH 的函数签名、参数语义、最小示例与 HAL ↔ LL 写法对照。瑞士国际主义风格，离线可用。">
+<title>STM32 HAL / LL / SPL · 常用函数速查</title>
+<meta name="description" content="STM32 HAL、LL 与 SPL 库常用函数速查表：GPIO、RCC、UART、I2C、SPI、TIM、ADC、DMA、NVIC、RTC/IWDG/FLASH 的函数签名、参数语义、最小示例与三库写法对照。瑞士国际主义风格，离线可用。">
 <script>
 /* 主题在首帧前生效，避免闪烁 */
 (function () {
@@ -339,6 +339,7 @@ main { padding: 0 var(--pad) 0 var(--gap); min-width: 0; }
 .e-name .tag.it { color: var(--red-ink); border-color: var(--red-ink); }
 .e-name .tag.lib-ll { color: var(--red-ink); border-color: var(--red-ink); }
 .e-name .tag.lib-both { color: var(--paper); background: var(--red); border-color: var(--red); }
+.e-name .tag.lib-spl { color: var(--ink); border-color: var(--ink); }
 .e-sig {
   margin-top: 8px; font: 400 11.5px/1.6 var(--mono); color: var(--ink-2);
   white-space: pre-wrap; word-break: break-word;
@@ -518,7 +519,7 @@ footer .mono { font-size: 10.5px; }
   <div class="grid-bg" aria-hidden="true"></div>
   <header class="top">
     <div class="brand">
-      <h1><b>STM32 HAL / LL</b><em>®</em><span class="meta">常用函数<wbr>速查 · 双库对照 · <i>Rev. 1.1</i></span></h1>
+      <h1><b>STM32 HAL / LL / SPL</b><em>®</em><span class="meta">常用函数<wbr>速查 · 三库对照 · <i>Rev. 1.2</i></span></h1>
     </div>
     <div class="tools">
       <div class="search">
@@ -547,7 +548,7 @@ footer .mono { font-size: 10.5px; }
     <ol class="nav-list" id="navlist"></ol>
     <dl class="nav-facts">
       <dt>状态码</dt><dd>HAL_OK / HAL_ERROR<br>HAL_BUSY / HAL_TIMEOUT</dd>
-      <dt>编译基线</dt><dd>STM32Cube HAL / LL · F1 / F4</dd>
+      <dt>编译基线</dt><dd>STM32 HAL / LL / SPL · F1 / F4</dd>
       <dt>快捷键</dt><dd>/ 搜索 · T 精简<br>D 主题 · Esc 清除</dd>
     </dl>
     <div class="nav-foot">
@@ -562,12 +563,12 @@ footer .mono { font-size: 10.5px; }
 
   <main id="content">
     <section class="hero">
-      <div class="kicker">STM32 · HAL + LL · 双库速查</div>
-      <h2>一个页面<br><span class="rd">查完</span><span class="thin">HAL / LL 调用。</span></h2>
+      <div class="kicker">STM32 · HAL + LL + SPL · 三库速查</div>
+      <h2>一个页面<br><span class="rd">查完</span><span class="thin">三库调用。</span></h2>
       <p class="lede">
         把 CubeMX 生成的初始化代码当作既定前提，本表只回答三个问题：<b>调哪个函数</b>、<b>参数怎么填</b>、<b>调用顺序是什么</b>。
         覆盖 GPIO、时钟、串口、I²C、SPI、定时器、ADC、DMA、中断、看门狗与 Flash 共 <b id="total">0</b> 个高频 API；
-        每条给出 HAL 写法，关键外设同时给出 <b>LL 写法与 HAL ↔ LL 对照</b>，示例默认 <b>HAL_OK 才继续</b> 的写法。
+        每条给出 HAL 写法，关键外设同时给出 <b>LL / SPL 写法与三库对照</b>，示例默认 <b>HAL_OK 才继续</b> 的写法。
       </p>
       <dl class="facts">
         <div class="fact">
@@ -583,8 +584,8 @@ footer .mono { font-size: 10.5px; }
           <dd>HAL_GetTick()<span>SysTick 每 1 ms 自增</span></dd>
         </div>
         <div class="fact">
-          <dt>两库共存</dt>
-          <dd>HAL + LL<span>同一外设不混初始化</span></dd>
+          <dt>三库共存</dt>
+          <dd>HAL / LL / SPL<span>同一外设不混初始化</span></dd>
         </div>
       </dl>
     </section>
@@ -594,6 +595,7 @@ footer .mono { font-size: 10.5px; }
       <button type="button" data-lib="all" class="on">全部</button>
       <button type="button" data-lib="HAL">HAL</button>
       <button type="button" data-lib="LL">LL</button>
+      <button type="button" data-lib="SPL">SPL</button>
       <span class="libcount" id="libcount"></span>
     </div>
 
@@ -607,11 +609,11 @@ footer .mono { font-size: 10.5px; }
 
     <footer>
       <div>
-        <b>STM32 HAL / LL 常用函数速查</b> · Rev. 1.1<br>
+        <b>STM32 HAL / LL / SPL 常用函数速查</b> · Rev. 1.2<br>
         <span class="mono">单文件 · 无外部依赖 · 可离线打开</span>
       </div>
       <div>
-        签名以 STM32CubeF1 / F4 的 HAL 与 LL 驱动为准；F0/L0/G0 等系列存在差异（如 <span class="mono">HAL_GPIO_Init</span> 的 Alternate 字段、ADC 校准宏、LL DMA 的 Channel / Stream 命名），以所用系列头文件为准。示例省略了错误处理与 <span class="mono">while(1)</span> 主循环，仅保留调用骨架。
+        签名以 STM32CubeF1 / F4 的 HAL 与 LL 驱动、以及 STM32F1 / F4 标准外设库（SPL）为准；F0/L0/G0 等系列存在差异（如 <span class="mono">HAL_GPIO_Init</span> 的 Alternate 字段、ADC 校准宏、DMA 的 Channel / Stream 命名），以所用系列头文件为准。示例省略了错误处理与 <span class="mono">while(1)</span> 主循环，仅保留调用骨架。
       </div>
     </footer>
   </main>
@@ -1997,25 +1999,25 @@ HAL_GROUPS.push({
    00 HAL 与 LL 选型对比
    ========================================================================= */
 var STM32_COMPARE = {
-  id: 'compare', no: '00', title: 'HAL 与 LL 选型', en: 'HAL vs LL · Choose',
-  note: '<b>同一颗芯片，两套驱动。</b>HAL 用 Handle + 状态机封装外设，开发快、跨系列可移植；LL 直接操作寄存器，代码小、速度快、实时性好。两者可以共存，但<b>同一个外设不要混用初始化</b>：时钟、引脚、外设配置只能由一方负责。',
-  compare: '<div class="cmp"><table><thead><tr><th>维度</th><th>HAL 库</th><th>LL 库</th></tr></thead><tbody>'
-    + '<tr><td>抽象层级</td><td>高：Handle + 状态机 + 回调</td><td>低：寄存器级 static inline 封装</td></tr>'
-    + '<tr><td>代码体积</td><td>大：按外设链接，常带完整状态机</td><td>小：只编入用到的函数，多数内联</td></tr>'
-    + '<tr><td>执行速度</td><td>有函数调用与参数检查，略慢</td><td>接近直接写寄存器，中断里开销小</td></tr>'
-    + '<tr><td>初始化</td><td>CubeMX 生成 MX_xxx_Init()</td><td>手写配置，或 CubeMX 为外设选择 LL</td></tr>'
-    + '<tr><td>可移植性</td><td>跨 F0/F1/F4/G0/L4 等系列</td><td>同系列内很好，跨系列 API 有差异</td></tr>'
-    + '<tr><td>中断 / 实时性</td><td>回调链较长，适合业务分层</td><td>中断里直接读写标志，延迟低</td></tr>'
-    + '<tr><td>调试</td><td>靠 HAL 状态码与断言</td><td>直接看寄存器与标志位</td></tr>'
-    + '<tr><td>适用场景</td><td>复杂外设、USB / ETH / RTOS、快速原型</td><td>资源紧、实时性高、逻辑简单的外设</td></tr>'
-    + '<tr><td>混用方式</td><td>不要与 LL 同时初始化同一外设</td><td>可用 LL 优化热点，复杂外设仍交给 HAL</td></tr>'
+  id: 'compare', no: '00', title: 'HAL / LL / SPL 选型', en: 'HAL vs LL vs SPL',
+  note: '<b>同一颗芯片，三代驱动。</b>HAL 用 Handle + 状态机封装外设，开发快、跨系列；LL 直接操作寄存器，代码小、实时性好；SPL 是 HAL 之前的标准外设库，函数 + 全局结构体，已停止更新。三者可以共存，但<b>同一个外设不要混用初始化</b>：时钟、引脚、外设配置只能由一方负责。',
+  compare: '<div class="cmp"><table><thead><tr><th>维度</th><th>HAL 库</th><th>LL 库</th><th>SPL 库</th></tr></thead><tbody>'
+    + '<tr><td>抽象层级</td><td>高：Handle + 状态机 + 回调</td><td>低：寄存器级 static inline</td><td>中：函数 + 全局结构体</td></tr>'
+    + '<tr><td>代码体积</td><td>大：按外设链接，常带状态机</td><td>小：只编入用到的函数</td><td>中：按外设独立 .c，比 HAL 小</td></tr>'
+    + '<tr><td>执行速度</td><td>有函数调用与检查，略慢</td><td>最快：接近直接写寄存器</td><td>中：函数调用后写寄存器</td></tr>'
+    + '<tr><td>初始化</td><td>CubeMX 生成 MX_xxx_Init()</td><td>手写，或 CubeMX 选 LL</td><td>手写，或沿用早期例程</td></tr>'
+    + '<tr><td>可移植性</td><td>跨 F0/F1/F4/G0/L4 等</td><td>同系列好，跨系列有差异</td><td>仅 F1/F2/F4/L1，已停更</td></tr>'
+    + '<tr><td>中断 / 实时性</td><td>回调链较长，适合分层</td><td>中断里直接读写标志</td><td>查标志，开销中等</td></tr>'
+    + '<tr><td>调试</td><td>HAL 状态码与断言</td><td>直接看寄存器与标志</td><td>标志 + 寄存器</td></tr>'
+    + '<tr><td>适用场景</td><td>复杂外设、USB / ETH / RTOS</td><td>资源紧、实时性高</td><td>维护老项目、教学</td></tr>'
+    + '<tr><td>混用方式</td><td colspan="3">同一外设只由一方初始化；可用 LL 优化热点、HAL 管复杂外设，SPL 仅用于老代码</td></tr>'
     + '</tbody></table></div>',
   entries: [
     {
       name: '同一任务：GPIO 翻转', kind: 'recipe',
-      sig: 'HAL_GPIO_TogglePin()  ↔  LL_GPIO_TogglePin()',
-      desc: '同样翻转一个引脚：HAL 走函数调用与参数检查，LL 是 static inline，直接读 ODR 再写 BSRR。',
-      tags: ['对比', 'gpio', '翻转', 'hal', 'll'],
+      sig: 'HAL_GPIO_TogglePin() · LL_GPIO_TogglePin() · GPIO_WriteBit(SPL)',
+      desc: '同样翻转一个引脚：HAL 走函数调用与参数检查，LL 是 static inline，SPL 则要用读-改-写模拟。',
+      tags: ['对比', 'gpio', '翻转', 'hal', 'll', 'spl'],
       code: [
         '// HAL：函数调用 + 参数检查',
         'HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);',
@@ -2023,15 +2025,16 @@ var STM32_COMPARE = {
         '// LL：static inline，直接读 ODR 写 BSRR',
         'LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_5);',
         '',
-        '// 差异：LL 没有 Handle 与状态机；',
-        '// 同样一次翻转，LL 通常少几个函数调用层级。'
+        '// SPL：没有 Toggle，读输出位再写',
+        'GPIO_WriteBit(GPIOA, GPIO_Pin_5,',
+        '  (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_5)));'
       ].join('\n')
     },
     {
       name: '同一任务：UART 发送一个字节', kind: 'recipe',
-      sig: 'HAL_UART_Transmit()  ↔  LL_USART_TransmitData8()',
-      desc: 'HAL 的阻塞发送内部已经处理了 TXE 等待与超时；LL 需要自己等标志再写数据寄存器。',
-      tags: ['对比', 'uart', '串口', '发送', 'hal', 'll'],
+      sig: 'HAL_UART_Transmit() · LL_USART_TransmitData8() · USART_SendData(SPL)',
+      desc: 'HAL 的阻塞发送内部已经处理了 TXE 等待与超时；LL 与 SPL 都需要自己等标志再写数据寄存器。',
+      tags: ['对比', 'uart', '串口', '发送', 'hal', 'll', 'spl'],
       code: [
         '// HAL：阻塞发送，超时 10 ms',
         'uint8_t ch = 0x41;',
@@ -2039,14 +2042,18 @@ var STM32_COMPARE = {
         '',
         '// LL：自己等 TXE，再写数据寄存器',
         'while (!LL_USART_IsActiveFlag_TXE(USART2)) {}',
-        'LL_USART_TransmitData8(USART2, 0x41);'
+        'LL_USART_TransmitData8(USART2, 0x41);',
+        '',
+        '// SPL：等 TXE 后调用 USART_SendData',
+        'while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET) {}',
+        'USART_SendData(USART2, 0x41);'
       ].join('\n')
     },
     {
       name: '同一任务：定时器 PWM 启动', kind: 'recipe',
-      sig: 'HAL_TIM_PWM_Start()  ↔  LL_TIM_EnableCounter()',
-      desc: 'HAL 用 Handle 封装通道启动；LL 直接设置比较值并使能计数器与输出。',
-      tags: ['对比', 'tim', 'pwm', '定时器', 'hal', 'll'],
+      sig: 'HAL_TIM_PWM_Start() · LL_TIM_EnableCounter() · TIM_Cmd(SPL)',
+      desc: 'HAL 用 Handle 封装通道启动；LL 与 SPL 都直接设置比较值并使能计数器。',
+      tags: ['对比', 'tim', 'pwm', '定时器', 'hal', 'll', 'spl'],
       code: [
         '// HAL：启动 PWM 通道并改占空比',
         'HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);',
@@ -2055,14 +2062,18 @@ var STM32_COMPARE = {
         '// LL：直接设置比较值并使能计数 / 输出',
         'LL_TIM_OC_SetCompareCH1(TIM3, 500);',
         'LL_TIM_EnableCounter(TIM3);',
-        'LL_TIM_EnableAllOutputs(TIM3);'
+        'LL_TIM_EnableAllOutputs(TIM3);',
+        '',
+        '// SPL：直接设置比较值并使能定时器',
+        'TIM_SetCompare1(TIM3, 500);',
+        'TIM_Cmd(TIM3, ENABLE);'
       ].join('\n')
     },
     {
       name: '同一任务：ADC 单次转换', kind: 'recipe',
-      sig: 'HAL_ADC_Start + PollForConversion  ↔  LL_ADC_REG_StartConversion',
-      desc: 'HAL 提供轮询与超时；LL 需要自己等 EOC 标志再读数据寄存器。',
-      tags: ['对比', 'adc', '采样', 'hal', 'll'],
+      sig: 'HAL_ADC_Start · LL_ADC_REG_StartConversion · ADC_SoftwareStartConvCmd(SPL)',
+      desc: 'HAL 提供轮询与超时；LL 与 SPL 都需要自己等 EOC 标志再读数据寄存器。',
+      tags: ['对比', 'adc', '采样', 'hal', 'll', 'spl'],
       code: [
         '// HAL：启动 + 轮询 + 取值',
         'HAL_ADC_Start(&hadc1);',
@@ -2072,7 +2083,12 @@ var STM32_COMPARE = {
         '// LL：启动 + 等 EOC + 读数据',
         'LL_ADC_REG_StartConversion(ADC1);',
         'while (!LL_ADC_IsActiveFlag_EOC(ADC1)) {}',
-        'uint16_t v_ll = LL_ADC_REG_ReadConversionData12(ADC1);'
+        'uint16_t v_ll = LL_ADC_REG_ReadConversionData12(ADC1);',
+        '',
+        '// SPL：软件启动 + 等 EOC',
+        'ADC_SoftwareStartConvCmd(ADC1, ENABLE);',
+        'while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET) {}',
+        'uint16_t v_spl = ADC_GetConversionValue(ADC1);'
       ].join('\n')
     },
     {
@@ -2087,6 +2103,27 @@ var STM32_COMPARE = {
         '// 3) 配置可用 LL_xxx_InitTypeDef，也可逐寄存器赋值',
         '// 4) 与 HAL 共存时，时钟 / 引脚初始化只能由一方负责',
         '//    中断向量共用，回调里不要混用阻塞式 HAL 调用'
+      ].join('\n')
+    },
+    {
+      name: 'SPL 的定位与迁移', kind: 'recipe',
+      sig: 'STM32 标准外设库 · 仅 F1/F2/F4/L1 · 已停止更新',
+      desc: 'SPL 是 HAL 之前的一代官方库：函数 + 全局结构体，直接写寄存器，没有 Handle 与状态机。适合维护老项目或从寄存器过渡，新项目不建议再用。',
+      tags: ['对比', 'spl', '标准库', '迁移', '老项目'],
+      code: [
+        '// SPL 典型写法：开时钟 → 填结构体 → Init',
+        'RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);',
+        'GPIO_InitTypeDef gpio;',
+        'gpio.GPIO_Pin = GPIO_Pin_5;',
+        'gpio.GPIO_Mode = GPIO_Mode_Out_PP;',
+        'gpio.GPIO_Speed = GPIO_Speed_50MHz;',
+        'GPIO_Init(GPIOA, &gpio);',
+        '',
+        '// 与 HAL / LL 的核心差异：',
+        '// 1) 无 Handle，配置结构体直接传地址',
+        '// 2) 时钟用 RCC_APBxPeriphClockCmd，不是 __HAL_RCC_* 宏',
+        '// 3) 只覆盖 F1/F2/F4/L1，已停止维护',
+        '// 4) 可与 HAL 共存，但同一外设不要混初始化'
       ].join('\n')
     }
   ]
@@ -2551,9 +2588,414 @@ var LL_ADD = {
   ]
 };
 
+/* =========================================================================
+   SPL 库条目：STM32 标准外设库（F1/F2/F4/L1，已停止更新）
+   ========================================================================= */
+var SPL_ADD = {
+  gpio: [
+    {
+      name: 'GPIO_Init', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void GPIO_Init(</span><span class="ty">GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)</span>',
+      desc: 'SPL 用全局结构体配置引脚：F1 字段为 GPIO_Pin / GPIO_Mode / GPIO_Speed；F4 另有 GPIO_OType / GPIO_PuPd / GPIO_Alternate。',
+      params: [['GPIOx', '端口基址：GPIOA … GPIOG'], ['GPIO_InitStruct', '引脚、模式、速度（F4 还有输出类型、上下拉、复用号）']],
+      note: '时钟必须先开：F1 用 <code>RCC_APB2PeriphClockCmd()</code>，F4 用 <code>RCC_AHB1PeriphClockCmd()</code>。',
+      when: 'SPL 工程里所有引脚配置的入口。',
+      tags: ['spl', 'gpio', '初始化', '结构体'],
+      code: [
+        'GPIO_InitTypeDef g;',
+        'g.GPIO_Pin = GPIO_Pin_5;',
+        'g.GPIO_Mode = GPIO_Mode_Out_PP;',
+        'g.GPIO_Speed = GPIO_Speed_50MHz;',
+        'GPIO_Init(GPIOA, &g);'
+      ].join('\n')
+    },
+    {
+      name: 'GPIO_SetBits / ResetBits / WriteBit', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void GPIO_SetBits(</span><span class="ty">GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)</span><br><span class="ret">void GPIO_ResetBits(</span><span class="ty">GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)</span><br><span class="ret">void GPIO_WriteBit(</span><span class="ty">GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal)</span>',
+      desc: '置位 / 复位 / 按位写；内部操作 BSRR / BRR，不做读改写。',
+      params: [['GPIOx', '端口基址'], ['GPIO_Pin', '引脚掩码，可或运算'], ['BitVal', 'Bit_SET / Bit_RESET']],
+      when: '输出控制，替代 HAL_GPIO_WritePin 与 LL_GPIO_SetOutputPin。',
+      tags: ['spl', 'gpio', '输出', '设置'],
+      code: [
+        'GPIO_SetBits(GPIOA, GPIO_Pin_5);',
+        'GPIO_ResetBits(GPIOA, GPIO_Pin_5);',
+        'GPIO_WriteBit(GPIOA, GPIO_Pin_5, Bit_SET);'
+      ].join('\n')
+    },
+    {
+      name: 'GPIO_ReadInputDataBit / ReadOutputDataBit', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">uint8_t GPIO_ReadInputDataBit(</span><span class="ty">GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)</span><br><span class="ret">uint16_t GPIO_ReadInputData(</span><span class="ty">GPIO_TypeDef* GPIOx)</span>',
+      desc: '读输入数据寄存器（IDR）或输出数据寄存器（ODR），返回 0 / 1 或整端口值。',
+      params: [['GPIOx', '端口基址'], ['GPIO_Pin', '引脚掩码']],
+      when: '读按键、拨码开关、传感器数字输出。',
+      tags: ['spl', 'gpio', '输入', '读取'],
+      code: [
+        'if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0) == Bit_RESET) {',
+        '  // 按键按下',
+        '}',
+        'uint16_t all = GPIO_ReadInputData(GPIOC);'
+      ].join('\n')
+    },
+    {
+      name: 'RCC_APB2PeriphClockCmd / RCC_AHB1PeriphClockCmd', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void RCC_APB2PeriphClockCmd(</span><span class="ty">uint32_t RCC_APB2Periph, FunctionalState NewState)</span><br><span class="ret">void RCC_AHB1PeriphClockCmd(</span><span class="ty">uint32_t RCC_AHB1Periph, FunctionalState NewState)</span>',
+      desc: 'SPL 的时钟使能函数：F1 的 GPIO 挂 APB2，F4 挂 AHB1。',
+      params: [['RCC_APB2Periph', 'F1：RCC_APB2Periph_GPIOA'], ['RCC_AHB1Periph', 'F4：RCC_AHB1Periph_GPIOA'], ['NewState', 'ENABLE / DISABLE']],
+      when: '任何 GPIO / 外设初始化之前。',
+      tags: ['spl', 'gpio', '时钟', 'rcc'],
+      code: [
+        'RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);   // F1',
+        'RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);   // F4'
+      ].join('\n')
+    }
+  ],
+  system: [
+    {
+      name: 'SysTick_Config', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">uint32_t SysTick_Config(</span><span class="ty">uint32_t ticks)</span>',
+      desc: 'CMSIS 内核函数，SPL 工程通常用它建立 1 ms 时基，再自己维护 tick 变量做延时。',
+      params: [['ticks', '两次中断之间的时钟数，1 ms 时传入 SystemCoreClock / 1000']],
+      note: '这是 CMSIS 函数，不是 SPL 独有；HAL 的 HAL_InitTick 内部也用它。',
+      when: 'SPL 工程的时基初始化。',
+      tags: ['spl', '时基', 'systick', '初始化'],
+      code: [
+        'volatile uint32_t ms_ticks = 0;',
+        'void SysTick_Handler(void) { ms_ticks++; }',
+        'SysTick_Config(SystemCoreClock / 1000);'
+      ].join('\n')
+    }
+  ],
+  rcc: [
+    {
+      name: 'RCC_GetClocksFreq', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void RCC_GetClocksFreq(</span><span class="ty">RCC_ClocksTypeDef* RCC_Clocks)</span>',
+      desc: '读回 SYSCLK / HCLK / PCLK1 / PCLK2 频率，用于校验时钟树。',
+      params: [['RCC_Clocks', '输出结构体：SYSCLK_Frequency、HCLK_Frequency、PCLK1/2_Frequency']],
+      when: '时钟配置完成后确认频率；串口波特率异常时排查。',
+      tags: ['spl', 'rcc', '频率', '校验'],
+      code: [
+        'RCC_ClocksTypeDef clk;',
+        'RCC_GetClocksFreq(&clk);',
+        '// clk.SYSCLK_Frequency / clk.HCLK_Frequency ...'
+      ].join('\n')
+    },
+    {
+      name: 'RCC_PLLConfig / RCC_SYSCLKConfig', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void RCC_PLLConfig(</span><span class="ty">uint32_t RCC_PLLSource, uint32_t PLLM, uint32_t PLLN, uint32_t PLLP, uint32_t PLLQ)</span>',
+      desc: 'F4 的 PLL 配置函数；F1 的签名不同（只有倍频系数）。配置后要 RCC_PLLCmd(ENABLE) 并等待就绪。',
+      params: [['RCC_PLLSource', 'RCC_PLLSource_HSE / HSI'], ['PLLM / PLLN / PLLP / PLLQ', 'F4 的分频倍频参数'], ['RCC_SYSCLKConfig', 'RCC_SYSCLKSource_PLLCLK / HSE / HSI']],
+      note: 'F1 用 <code>RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_9)</code>，参数个数不同。',
+      when: 'SystemClock_Config 等价实现里。',
+      tags: ['spl', 'rcc', 'pll', '时钟'],
+      code: [
+        'RCC_PLLConfig(RCC_PLLSource_HSE, 8, 336, 2, 7);',
+        'RCC_PLLCmd(ENABLE);',
+        'while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET) {}',
+        'RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);'
+      ].join('\n')
+    }
+  ],
+  nvic: [
+    {
+      name: 'NVIC_Init', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void NVIC_Init(</span><span class="ty">NVIC_InitTypeDef* NVIC_InitStruct)</span>',
+      desc: 'SPL（misc.c）对 CMSIS NVIC 的封装：配置中断通道、抢占 / 子优先级与使能。',
+      params: [['NVIC_IRQChannel', 'IRQn_Type，如 EXTI0_IRQn'], ['NVIC_IRQChannelPreemptionPriority', '抢占优先级'], ['NVIC_IRQChannelSubPriority', '子优先级'], ['NVIC_IRQChannelCmd', 'ENABLE / DISABLE']],
+      note: '分组用 <code>NVIC_PriorityGroupConfig()</code>；HAL 用 HAL_NVIC_SetPriority / EnableIRQ。',
+      when: 'SPL 工程里使能任何外设中断。',
+      tags: ['spl', 'nvic', '中断', '优先级'],
+      code: [
+        'NVIC_InitTypeDef n;',
+        'n.NVIC_IRQChannel = EXTI0_IRQn;',
+        'n.NVIC_IRQChannelPreemptionPriority = 1;',
+        'n.NVIC_IRQChannelSubPriority = 1;',
+        'n.NVIC_IRQChannelCmd = ENABLE;',
+        'NVIC_Init(&n);'
+      ].join('\n')
+    },
+    {
+      name: 'EXTI_Init / EXTI_GetITStatus', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void EXTI_Init(</span><span class="ty">EXTI_InitTypeDef* EXTI_InitStruct)</span><br><span class="ret">ITStatus EXTI_GetITStatus(</span><span class="ty">uint32_t EXTI_Line)</span>',
+      desc: '配置外部中断线（触发边沿、使能），并在中断里查询 / 清除挂起位。',
+      params: [['EXTI_Line', 'EXTI_Line0 … EXTI_Line15'], ['EXTI_Mode', 'EXTI_Mode_Interrupt / Event'], ['EXTI_Trigger', 'EXTI_Trigger_Rising / Falling / Rising_Falling']],
+      when: '按键、编码器、外部脉冲的边沿中断。',
+      tags: ['spl', 'exti', '中断', '标志'],
+      code: [
+        'EXTI_InitTypeDef e;',
+        'e.EXTI_Line = EXTI_Line0;',
+        'e.EXTI_Mode = EXTI_Mode_Interrupt;',
+        'e.EXTI_Trigger = EXTI_Trigger_Falling;',
+        'e.EXTI_LineCmd = ENABLE;',
+        'EXTI_Init(&e);',
+        '',
+        'if (EXTI_GetITStatus(EXTI_Line0) != RESET) {',
+        '  EXTI_ClearITPendingBit(EXTI_Line0);',
+        '}'
+      ].join('\n')
+    }
+  ],
+  uart: [
+    {
+      name: 'USART_Init', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void USART_Init(</span><span class="ty">USART_TypeDef* USARTx, USART_InitTypeDef* USART_InitStruct)</span>',
+      desc: '配置波特率、字长、停止位、校验、收发模式与硬件流控。',
+      params: [['USARTx', 'USART1 … USART6 / UART4 …'], ['USART_InitStruct', 'USART_BaudRate / WordLength / StopBits / Parity / Mode / HardwareFlowControl']],
+      note: 'SPL 没有状态机，配置完调用 <code>USART_Cmd(USARTx, ENABLE)</code> 才生效。',
+      when: '串口首次初始化。',
+      tags: ['spl', 'uart', '串口', '初始化'],
+      code: [
+        'USART_InitTypeDef u;',
+        'u.USART_BaudRate = 115200;',
+        'u.USART_WordLength = USART_WordLength_8b;',
+        'u.USART_StopBits = USART_StopBits_1;',
+        'u.USART_Parity = USART_Parity_No;',
+        'u.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;',
+        'u.USART_HardwareFlowControl = USART_HardwareFlowControl_None;',
+        'USART_Init(USART1, &u);'
+      ].join('\n')
+    },
+    {
+      name: 'USART_Cmd', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void USART_Cmd(</span><span class="ty">USART_TypeDef* USARTx, FunctionalState NewState)</span>',
+      desc: '使能 / 关闭 USART，置位 CR1 的 UE。',
+      params: [['USARTx', 'USART 外设基址'], ['NewState', 'ENABLE / DISABLE']],
+      when: 'USART_Init 之后、收发之前。',
+      tags: ['spl', 'uart', '使能'],
+      code: [
+        'USART_Cmd(USART1, ENABLE);'
+      ].join('\n')
+    },
+    {
+      name: 'USART_SendData / USART_GetFlagStatus', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void USART_SendData(</span><span class="ty">USART_TypeDef* USARTx, uint16_t Data)</span><br><span class="ret">uint16_t USART_ReceiveData(</span><span class="ty">USART_TypeDef* USARTx)</span><br><span class="ret">FlagStatus USART_GetFlagStatus(</span><span class="ty">USART_TypeDef* USARTx, uint16_t USART_FLAG)</span>',
+      desc: '发送 / 接收一个字节；发送前查 TXE，接收前查 RXNE。',
+      params: [['USARTx', 'USART 外设基址'], ['Data', '待发送数据（低 8 / 9 位有效）']],
+      note: '接收中断用 <code>USART_ITConfig(USARTx, USART_IT_RXNE, ENABLE)</code>。',
+      when: '轮询收发，或中断里搬运数据。',
+      tags: ['spl', 'uart', '发送', '接收', '标志'],
+      code: [
+        'while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET) {}',
+        'USART_SendData(USART1, 0x41);',
+        '',
+        'if (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET) {',
+        '  uint8_t b = USART_ReceiveData(USART1);',
+        '}'
+      ].join('\n')
+    }
+  ],
+  i2c: [
+    {
+      name: 'I2C_Init / I2C_Cmd', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void I2C_Init(</span><span class="ty">I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct)</span><br><span class="ret">void I2C_Cmd(</span><span class="ty">I2C_TypeDef* I2Cx, FunctionalState NewState)</span>',
+      desc: '配置时钟频率、占空比、自身地址与应答，然后使能 I²C。',
+      params: [['I2Cx', 'I2C1 / I2C2'], ['I2C_InitStruct', 'I2C_ClockSpeed / DutyCycle / OwnAddress1 / Ack / AddressingMode']],
+      when: '传感器、EEPROM 等 I²C 从设备首次初始化。',
+      tags: ['spl', 'i2c', '初始化'],
+      code: [
+        'I2C_InitTypeDef i;',
+        'i.I2C_ClockSpeed = 400000;',
+        'i.I2C_Mode = I2C_Mode_I2C;',
+        'i.I2C_DutyCycle = I2C_DutyCycle_2;',
+        'i.I2C_OwnAddress1 = 0;',
+        'i.I2C_Ack = I2C_Ack_Enable;',
+        'i.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;',
+        'I2C_Init(I2C1, &i);',
+        'I2C_Cmd(I2C1, ENABLE);'
+      ].join('\n')
+    },
+    {
+      name: 'I2C_GenerateSTART / SendData', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void I2C_GenerateSTART(</span><span class="ty">I2C_TypeDef* I2Cx, FunctionalState NewState)</span><br><span class="ret">void I2C_SendData(</span><span class="ty">I2C_TypeDef* I2Cx, uint8_t Data)</span><br><span class="ret">FlagStatus I2C_GetFlagStatus(</span><span class="ty">I2C_TypeDef* I2Cx, uint32_t I2C_FLAG)</span>',
+      desc: '手动时序：START → 地址 → 数据 → STOP，每一步查标志。',
+      params: [['I2Cx', 'I2C 外设基址'], ['Data', '地址字节或数据字节'], ['I2C_FLAG', 'I2C_FLAG_SB / ADDR / TXE / BTF']],
+      when: '需要精确控制时序或实现非标准 I²C 时序时。',
+      tags: ['spl', 'i2c', '时序', '发送'],
+      code: [
+        'I2C_GenerateSTART(I2C1, ENABLE);',
+        'while (I2C_GetFlagStatus(I2C1, I2C_FLAG_SB) == RESET) {}',
+        'I2C_SendData(I2C1, 0xA0);',
+        'while (I2C_GetFlagStatus(I2C1, I2C_FLAG_TXE) == RESET) {}',
+        'I2C_SendData(I2C1, 0x00);',
+        'while (I2C_GetFlagStatus(I2C1, I2C_FLAG_BTF) == RESET) {}',
+        'I2C_GenerateSTOP(I2C1, ENABLE);'
+      ].join('\n')
+    }
+  ],
+  spi: [
+    {
+      name: 'SPI_Init / SPI_Cmd', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void SPI_Init(</span><span class="ty">SPI_TypeDef* SPIx, SPI_InitTypeDef* SPI_InitStruct)</span><br><span class="ret">void SPI_Cmd(</span><span class="ty">SPI_TypeDef* SPIx, FunctionalState NewState)</span>',
+      desc: '配置主从模式、数据宽度、时钟极性与相位、NSS、波特率与位序，然后使能 SPI。',
+      params: [['SPIx', 'SPI1 / SPI2 …'], ['SPI_InitStruct', 'SPI_Direction / Mode / DataSize / CPOL / CPHA / NSS / BaudRatePrescaler / FirstBit']],
+      when: 'Flash、LCD、传感器等 SPI 外设初始化。',
+      tags: ['spl', 'spi', '初始化'],
+      code: [
+        'SPI_InitTypeDef s;',
+        's.SPI_Direction = SPI_Direction_2Lines_FullDuplex;',
+        's.SPI_Mode = SPI_Mode_Master;',
+        's.SPI_DataSize = SPI_DataSize_8b;',
+        's.SPI_CPOL = SPI_CPOL_Low;',
+        's.SPI_CPHA = SPI_CPHA_1Edge;',
+        's.SPI_NSS = SPI_NSS_Soft;',
+        's.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;',
+        's.SPI_FirstBit = SPI_FirstBit_MSB;',
+        'SPI_Init(SPI1, &s);',
+        'SPI_Cmd(SPI1, ENABLE);'
+      ].join('\n')
+    },
+    {
+      name: 'SPI_I2S_SendData / ReceiveData', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void SPI_I2S_SendData(</span><span class="ty">SPI_TypeDef* SPIx, uint16_t Data)</span><br><span class="ret">uint16_t SPI_I2S_ReceiveData(</span><span class="ty">SPI_TypeDef* SPIx)</span><br><span class="ret">FlagStatus SPI_I2S_GetFlagStatus(</span><span class="ty">SPI_TypeDef* SPIx, uint16_t SPI_I2S_FLAG)</span>',
+      desc: '全双工收发：写入 DR 启动传输，读 DR 取回数据。',
+      params: [['SPIx', 'SPI 外设基址'], ['Data', '待发送数据'], ['SPI_I2S_FLAG', 'SPI_I2S_FLAG_TXE / RXNE']],
+      note: '只收也要先发一个哑字节（如 0xFF）产生时钟。',
+      when: '轮询方式读写 SPI 外设；高速场合改用 DMA。',
+      tags: ['spl', 'spi', '发送', '接收', '标志'],
+      code: [
+        'while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET) {}',
+        'SPI_I2S_SendData(SPI1, 0x9F);',
+        'while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET) {}',
+        'uint8_t id = SPI_I2S_ReceiveData(SPI1);'
+      ].join('\n')
+    }
+  ],
+  tim: [
+    {
+      name: 'TIM_TimeBaseInit / TIM_Cmd', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void TIM_TimeBaseInit(</span><span class="ty">TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)</span><br><span class="ret">void TIM_Cmd(</span><span class="ty">TIM_TypeDef* TIMx, FunctionalState NewState)</span>',
+      desc: '配置预分频、计数模式、周期与时钟分频，然后启动 / 停止计数器。',
+      params: [['TIMx', 'TIM1 … TIM14'], ['TIM_TimeBaseInitStruct', 'TIM_Prescaler / TIM_CounterMode / TIM_Period / TIM_ClockDivision / TIM_RepetitionCounter']],
+      when: '定时中断、PWM、输入捕获的初始化。',
+      tags: ['spl', 'tim', '定时器', '初始化'],
+      code: [
+        'TIM_TimeBaseInitTypeDef t;',
+        't.TIM_Prescaler = 8399;',
+        't.TIM_CounterMode = TIM_CounterMode_Up;',
+        't.TIM_Period = 999;',
+        't.TIM_ClockDivision = TIM_CKD_DIV1;',
+        'TIM_TimeBaseInit(TIM3, &t);',
+        'TIM_Cmd(TIM3, ENABLE);'
+      ].join('\n')
+    },
+    {
+      name: 'TIM_OC1Init / TIM_SetCompare1', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void TIM_OC1Init(</span><span class="ty">TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)</span><br><span class="ret">void TIM_SetCompare1(</span><span class="ty">TIM_TypeDef* TIMx, uint16_t Compare1)</span>',
+      desc: '配置输出比较通道 1 为 PWM 模式，运行中改比较值调占空比。',
+      params: [['TIMx', '定时器基址'], ['TIM_OCInitStruct', 'TIM_OCMode / TIM_OutputState / TIM_Pulse / TIM_OCPolarity'], ['Compare1', '比较值，0 … 周期']],
+      note: '高级定时器 TIM1 / TIM8 还要 <code>TIM_CtrlPWMOutputs(TIMx, ENABLE)</code> 打开主输出。',
+      when: 'PWM 输出、呼吸灯、电机调速。',
+      tags: ['spl', 'tim', 'pwm', '占空比'],
+      code: [
+        'TIM_OCInitTypeDef oc;',
+        'oc.TIM_OCMode = TIM_OCMode_PWM1;',
+        'oc.TIM_OutputState = TIM_OutputState_Enable;',
+        'oc.TIM_Pulse = 500;',
+        'oc.TIM_OCPolarity = TIM_OCPolarity_High;',
+        'TIM_OC1Init(TIM3, &oc);',
+        'TIM_SetCompare1(TIM3, 500);'
+      ].join('\n')
+    }
+  ],
+  adc: [
+    {
+      name: 'ADC_Init / ADC_RegularChannelConfig', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void ADC_Init(</span><span class="ty">ADC_TypeDef* ADCx, ADC_InitTypeDef* ADC_InitStruct)</span><br><span class="ret">void ADC_RegularChannelConfig(</span><span class="ty">ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t Rank, uint8_t ADC_SampleTime)</span>',
+      desc: '配置扫描 / 连续 / 触发模式，并设置规则组通道与采样时间。',
+      params: [['ADCx', 'ADC1 / ADC2 / ADC3'], ['ADC_InitStruct', 'ADC_Resolution / ADC_ScanConvMode / ADC_ContinuousConvMode / ADC_ExternalTrigConv / ADC_DataAlign'], ['ADC_Channel / Rank', '通道号与转换顺序；SampleTime 选采样周期']],
+      note: 'F1 的校准流程与 F4 不同：F1 用 <code>ADC_ResetCalibration / ADC_StartCalibration</code>，F4 用 <code>ADC_StartCalibration</code> 并等标志。',
+      when: 'ADC 首次使用，必须在校准与转换之前。',
+      tags: ['spl', 'adc', '初始化', '采样'],
+      code: [
+        'ADC_InitTypeDef a;',
+        'a.ADC_Resolution = ADC_Resolution_12b;',
+        'a.ADC_ScanConvMode = DISABLE;',
+        'a.ADC_ContinuousConvMode = DISABLE;',
+        'a.ADC_DataAlign = ADC_DataAlign_Right;',
+        'ADC_Init(ADC1, &a);',
+        'ADC_Cmd(ADC1, ENABLE);',
+        'ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_56Cycles);'
+      ].join('\n')
+    },
+    {
+      name: 'ADC_SoftwareStartConvCmd / GetConversionValue', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void ADC_SoftwareStartConvCmd(</span><span class="ty">ADC_TypeDef* ADCx, FunctionalState NewState)</span><br><span class="ret">uint16_t ADC_GetConversionValue(</span><span class="ty">ADC_TypeDef* ADCx)</span>',
+      desc: '软件触发一次转换，等 EOC 标志后读取结果。',
+      params: [['ADCx', 'ADC 外设基址'], ['ADC_FLAG', 'ADC_FLAG_EOC / ADC_FLAG_STRT']],
+      when: '单次采样、轮询读取；连续采样建议配 DMA。',
+      tags: ['spl', 'adc', '采样', '读取', 'eoc'],
+      code: [
+        'ADC_SoftwareStartConvCmd(ADC1, ENABLE);',
+        'while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET) {}',
+        'uint16_t v = ADC_GetConversionValue(ADC1);',
+        'ADC_ClearFlag(ADC1, ADC_FLAG_EOC);'
+      ].join('\n')
+    }
+  ],
+  dma: [
+    {
+      name: 'DMA_Init / DMA_Cmd', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void DMA_Init(</span><span class="ty">DMA_Channel_TypeDef* DMAy_Channelx, DMA_InitTypeDef* DMA_InitStruct)</span><br><span class="ret">void DMA_Cmd(</span><span class="ty">DMA_Channel_TypeDef* DMAy_Channelx, FunctionalState NewState)</span>',
+      desc: '按 Channel 配置外设 / 存储地址、方向、地址自增、数据宽度、传输数量与优先级。',
+      params: [['DMAy_Channelx', 'DMA1_Channel1 … DMA2_Channel5'], ['DMA_InitStruct', 'DMA_PeripheralBaseAddr / DMA_MemoryBaseAddr / DMA_DIR / DMA_BufferSize / DMA_PeripheralInc / DMA_MemoryInc / DMA_PeripheralDataSize / DMA_MemoryDataSize / DMA_Mode / DMA_Priority']],
+      note: 'F4 改用 Stream：<code>DMA_Init(DMA2_Stream2, ...)</code> 且多一个 Channel 字段；F1 只有 Channel。',
+      when: '串口 / SPI / ADC 的大块数据搬运。',
+      tags: ['spl', 'dma', '初始化', 'channel'],
+      code: [
+        'DMA_InitTypeDef d;',
+        'd.DMA_PeripheralBaseAddr = (uint32_t)&USART1->DR;',
+        'd.DMA_MemoryBaseAddr = (uint32_t)rxbuf;',
+        'd.DMA_DIR = DMA_DIR_PeripheralSRC;',
+        'd.DMA_BufferSize = sizeof(rxbuf);',
+        'd.DMA_PeripheralInc = DMA_PeripheralInc_Disable;',
+        'd.DMA_MemoryInc = DMA_MemoryInc_Enable;',
+        'd.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;',
+        'd.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;',
+        'd.DMA_Mode = DMA_Mode_Normal;',
+        'd.DMA_Priority = DMA_Priority_High;',
+        'DMA_Init(DMA1_Channel5, &d);',
+        'DMA_Cmd(DMA1_Channel5, ENABLE);'
+      ].join('\n')
+    },
+    {
+      name: 'DMA_GetFlagStatus / DMA_ClearFlag', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">FlagStatus DMA_GetFlagStatus(</span><span class="ty">uint32_t DMAy_FLAG)</span><br><span class="ret">void DMA_ClearFlag(</span><span class="ty">uint32_t DMAy_FLAG)</span>',
+      desc: '查询 / 清除传输完成等标志，用于轮询或中断处理。',
+      params: [['DMAy_FLAG', 'DMA1_FLAG_TC5 / HT5 / TE5；F4 为 DMA_FLAG_TCIFx']],
+      note: '中断方式还需使能对应通道中断并配置 NVIC。',
+      when: 'DMA 传输完成后处理数据或启动下一轮。',
+      tags: ['spl', 'dma', '标志', '中断'],
+      code: [
+        'while (DMA_GetFlagStatus(DMA1_FLAG_TC5) == RESET) {}',
+        'DMA_ClearFlag(DMA1_FLAG_TC5);'
+      ].join('\n')
+    }
+  ],
+  misc: [
+    {
+      name: 'IWDG_WriteAccessCmd / IWDG_Enable', kind: 'fn', lib: 'SPL',
+      sig: '<span class="ret">void IWDG_WriteAccessCmd(</span><span class="ty">uint16_t IWDG_WriteAccess)</span><br><span class="ret">void IWDG_SetPrescaler(</span><span class="ty">uint8_t IWDG_Prescaler)</span><br><span class="ret">void IWDG_SetReload(</span><span class="ty">uint16_t Reload)</span><br><span class="ret">void IWDG_ReloadCounter(</span><span class="ty">void)</span><br><span class="ret">void IWDG_Enable(</span><span class="ty">void)</span>',
+      desc: 'SPL 的看门狗流程：解除写保护 → 设预分频 / 重装值 → 喂狗 → 启动。',
+      params: [['IWDG_WriteAccess', 'IWDG_WriteAccess_Enable'], ['IWDG_Prescaler', 'IWDG_Prescaler_4 … 256'], ['Reload', '12 位重装值 0 … 4095']],
+      note: 'IWDG 启动后无法关闭，只能复位；喂狗周期要小于溢出时间。',
+      when: '产品级看门狗、防止程序跑飞。',
+      tags: ['spl', 'iwdg', '看门狗', '喂狗'],
+      code: [
+        'IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);',
+        'IWDG_SetPrescaler(IWDG_Prescaler_64);',
+        'IWDG_SetReload(1000);',
+        'IWDG_ReloadCounter();',
+        'IWDG_Enable();',
+        '// 主循环里定期：',
+        'IWDG_ReloadCounter();'
+      ].join('\n')
+    }
+  ]
+};
+
 HAL_GROUPS.unshift(STM32_COMPARE);
 HAL_GROUPS.forEach(function (g) {
   if (LL_ADD[g.id]) g.entries = g.entries.concat(LL_ADD[g.id]);
+  if (SPL_ADD[g.id]) g.entries = g.entries.concat(SPL_ADD[g.id]);
 });
 
 /* =========================================================================
@@ -2584,7 +3026,7 @@ HAL_GROUPS.forEach(function (g) {
       '<span class="n">' + g.no + '</span><span class="t">' + esc(g.title) + '</span></a></li>';
     var libSet = {};
     g.entries.forEach(function (e) { libSet[e.lib || (g.id === 'compare' ? 'BOTH' : 'HAL')] = 1; });
-    var libTxt = Object.keys(libSet).map(function (k) { return k === 'BOTH' ? 'HAL + LL' : k; }).join(' + ');
+    var libTxt = Object.keys(libSet).map(function (k) { return k === 'BOTH' ? 'HAL + LL + SPL' : k; }).join(' + ');
     htmlG += '<section class="group" id="g-' + g.id + '" aria-labelledby="h-' + g.id + '">' +
       '<div class="group-head">' +
       '<div><span class="g-no">' + g.no + ' — SECTION</span>' +
@@ -2636,13 +3078,13 @@ HAL_GROUPS.forEach(function (g) {
   var libBtns = $$('#libbar button');
   var libSel = 'all';
   var libCountEl = $('#libcount');
-  var libTotals = { HAL: 0, LL: 0, BOTH: 0 };
+  var libTotals = { HAL: 0, LL: 0, SPL: 0, BOTH: 0 };
   entries.forEach(function (el) {
     var l = el.getAttribute('data-lib');
     if (libTotals[l] !== undefined) libTotals[l]++;
   });
   if (libCountEl) {
-    libCountEl.textContent = 'HAL ' + libTotals.HAL + ' · LL ' + libTotals.LL + (libTotals.BOTH ? ' · 对比 ' + libTotals.BOTH : '');
+    libCountEl.textContent = 'HAL ' + libTotals.HAL + ' · LL ' + libTotals.LL + ' · SPL ' + libTotals.SPL + (libTotals.BOTH ? ' · 对比 ' + libTotals.BOTH : '');
   }
   libBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
